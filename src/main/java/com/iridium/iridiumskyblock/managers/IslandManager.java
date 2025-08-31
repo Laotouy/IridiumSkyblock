@@ -611,42 +611,43 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public CompletableFuture<Void> recalculateTeam(Island island) {
-        Map<XMaterial, Integer> teamBlocks = new HashMap<>();
-        Map<EntityType, Integer> teamSpawners = new HashMap<>();
-        return CompletableFuture.runAsync(() -> {
-            List<Chunk> chunks = getIslandChunks(island).join();
-            for (Chunk chunk : chunks) {
-                ChunkSnapshot chunkSnapshot = chunk.getChunkSnapshot(true, false, false);
-                for (int x = 0; x < 16; x++) {
-                    for (int z = 0; z < 16; z++) {
-                        final int maxy = chunkSnapshot.getHighestBlockYAt(x, z);
-                        for (int y = 0; y <= maxy; y++) {
-                            if (island.isInIsland(x + (chunkSnapshot.getX() * 16), z + (chunkSnapshot.getZ() * 16))) {
-                                XMaterial material = XMaterial.matchXMaterial(chunkSnapshot.getBlockType(x, y, z));
-                                teamBlocks.put(material, teamBlocks.getOrDefault(material, 0) + 1);
-                            }
-                        }
-                    }
-                }
-                getBlockStacks(chunk, island).forEach((key, value) -> {
-                    teamBlocks.put(key, teamBlocks.getOrDefault(key, 0) + value);
-                });
-
-                getSpawners(chunk, island).join().forEach(creatureSpawner -> {
-                    int amount = getSpawnerStackAmount(creatureSpawner).join();
-                    teamSpawners.put(creatureSpawner.getSpawnedType(), teamSpawners.getOrDefault(creatureSpawner.getSpawnedType(), 0) + amount);
-                });
-            }
-        }).thenRun(() -> Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
-            List<TeamBlock> blocks = IridiumSkyblock.getInstance().getDatabaseManager().getTeamBlockTableManager().getEntries(island);
-            List<TeamSpawners> spawners = IridiumSkyblock.getInstance().getDatabaseManager().getTeamSpawnerTableManager().getEntries(island);
-            for (TeamBlock teamBlock : blocks) {
-                teamBlock.setAmount(teamBlocks.getOrDefault(teamBlock.getXMaterial(), 0));
-            }
-            for (TeamSpawners teamSpawner : spawners) {
-                teamSpawner.setAmount(teamSpawners.getOrDefault(teamSpawner.getEntityType(), 0));
-            }
-        }));
+        return null;
+//        Map<XMaterial, Integer> teamBlocks = new HashMap<>();
+//        Map<EntityType, Integer> teamSpawners = new HashMap<>();
+//        return CompletableFuture.runAsync(() -> {
+//            List<Chunk> chunks = getIslandChunks(island).join();
+//            for (Chunk chunk : chunks) {
+//                ChunkSnapshot chunkSnapshot = chunk.getChunkSnapshot(true, false, false);
+//                for (int x = 0; x < 16; x++) {
+//                    for (int z = 0; z < 16; z++) {
+//                        final int maxy = chunkSnapshot.getHighestBlockYAt(x, z);
+//                        for (int y = 0; y <= maxy; y++) {
+//                            if (island.isInIsland(x + (chunkSnapshot.getX() * 16), z + (chunkSnapshot.getZ() * 16))) {
+//                                XMaterial material = XMaterial.matchXMaterial(chunkSnapshot.getBlockType(x, y, z));
+//                                teamBlocks.put(material, teamBlocks.getOrDefault(material, 0) + 1);
+//                            }
+//                        }
+//                    }
+//                }
+//                getBlockStacks(chunk, island).forEach((key, value) -> {
+//                    teamBlocks.put(key, teamBlocks.getOrDefault(key, 0) + value);
+//                });
+//
+//                getSpawners(chunk, island).join().forEach(creatureSpawner -> {
+//                    int amount = getSpawnerStackAmount(creatureSpawner).join();
+//                    teamSpawners.put(creatureSpawner.getSpawnedType(), teamSpawners.getOrDefault(creatureSpawner.getSpawnedType(), 0) + amount);
+//                });
+//            }
+//        }).thenRun(() -> Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+//            List<TeamBlock> blocks = IridiumSkyblock.getInstance().getDatabaseManager().getTeamBlockTableManager().getEntries(island);
+//            List<TeamSpawners> spawners = IridiumSkyblock.getInstance().getDatabaseManager().getTeamSpawnerTableManager().getEntries(island);
+//            for (TeamBlock teamBlock : blocks) {
+//                teamBlock.setAmount(teamBlocks.getOrDefault(teamBlock.getXMaterial(), 0));
+//            }
+//            for (TeamSpawners teamSpawner : spawners) {
+//                teamSpawner.setAmount(teamSpawners.getOrDefault(teamSpawner.getEntityType(), 0));
+//            }
+//        }));
     }
 
     public CompletableFuture<List<CreatureSpawner>> getSpawners(Chunk chunk, Island island) {

@@ -51,7 +51,6 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     private Commands commands;
     private BankItems bankItems;
     private Enhancements enhancements;
-    private BlockValues blockValues;
     private Top top;
     private SQL sql;
     private Missions missions;
@@ -157,12 +156,13 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         Bukkit.getServer().getOnlinePlayers().forEach(player -> getIslandManager().sendIslandBorder(player));
 
         addBstats(5825);
-        startUpdateChecker(62480);
+//        startUpdateChecker(62480);
         super.onEnable();
         this.teamsPlaceholderBuilder = new IslandPlaceholderBuilder();
         this.userPlaceholderBuilder = new UserPlaceholderBuilder();
         this.teamChatPlaceholderBuilder = new TeamChatPlaceholderBuilder();
     }
+
 
     private Economy setupEconomy() {
         RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(Economy.class);
@@ -197,7 +197,6 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.permissions = getPersist().load(Permissions.class);
         this.bankItems = getPersist().load(BankItems.class);
         this.enhancements = getPersist().load(Enhancements.class);
-        this.blockValues = getPersist().load(BlockValues.class);
         this.top = getPersist().load(Top.class);
         this.missions = getPersist().load(Missions.class);
         this.schematics = getPersist().load(Schematics.class);
@@ -236,7 +235,6 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         getPersist().save(permissions);
         getPersist().save(bankItems);
         getPersist().save(enhancements);
-        getPersist().save(blockValues);
         getPersist().save(top);
         getPersist().save(missions);
         getPersist().save(schematics);
@@ -327,7 +325,6 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
 
     public void migrateData(){
         processFields(BankItems.class, getBankItems(), 0);
-        processFields(BlockValues.class, getBlockValues(), 0);
         processFields(Commands.class, getCommands(), 0);
         processFields(Configuration.class, getConfiguration(), 0);
         processFields(Enhancements.class, getEnhancements(), 0);

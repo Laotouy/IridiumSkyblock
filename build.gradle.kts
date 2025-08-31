@@ -25,7 +25,9 @@ dependencies {
     implementation("org.jetbrains:annotations:26.0.2")
     implementation("com.j256.ormlite:ormlite-core:6.1")
     implementation("com.j256.ormlite:ormlite-jdbc:6.1")
-    implementation("com.iridium:IridiumTeams:2.6.1")
+    // implementation("com.iridium:IridiumTeams:2.5.15")
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+
     implementation("commons-lang:commons-lang:2.6")
 
     // Other dependencies that are not required or already available at runtime
@@ -94,7 +96,10 @@ tasks {
         relocate("com.iridium.iridiumcolorapi")
         relocate("org.yaml.snakeyaml")
         relocate("io.papermc.lib")
+        
+        // 排除指定的 XSeries 类文件
         relocate("com.cryptomorin.xseries")
+        
         relocate("com.fasterxml.jackson")
         relocate("org.apache.commons")
 
